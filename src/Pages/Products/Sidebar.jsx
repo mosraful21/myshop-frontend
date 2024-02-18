@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { BsChevronRight } from "react-icons/bs";
 import { useQuery } from "react-query";
-import { Link } from "react-router-dom";
 import {
   getCategoryAPI,
   getSubCategoryAPI,
@@ -28,10 +27,8 @@ const Sidebar = ({ openSidebarToggle }) => {
     );
     const categoryMenuItem = {
       title: categoryName,
-      link: `/product/${categoryName.toLowerCase()}`,
       subMenu: subcategories.map((subcategory) => ({
         subTitle: subcategory.name,
-        subLink: `/product/${categoryName.toLowerCase()}/${subcategory._id}`,
       })),
     };
     dynamicMenuItems.push(categoryMenuItem);
@@ -69,42 +66,35 @@ const Sidebar = ({ openSidebarToggle }) => {
         {dynamicMenuItems.map((menuItem, index) => (
           <div key={index} className="text-xl">
             {menuItem.subMenu && menuItem.subMenu.length > 0 ? (
-              <div
-                className="flex items-center justify-between px-4 py-2 cursor-pointer hover:bg-[#c6c6c62a] transition duration-300 ease"
-                onClick={() => handleSubMenuToggle(index)}
-              >
-                <span className="flex items-center gap-2">
-                  <Link to={menuItem.link}>{menuItem.title}</Link>
-                </span>
+              <div className="flex items-center justify-between px-4 py-2 hover:bg-[#c6c6c62a]">
+                <p className="cursor-pointer">{menuItem.title}</p>
+
                 {menuItem.subMenu && menuItem.subMenu.length > 0 && (
                   <span
+                    onClick={() => handleSubMenuToggle(index)}
                     className={`transition-transform transform ${
                       openSubMenu[index] ? "rotate-90" : "rotate-0"
-                    } ease-in-out duration-500`}
+                    } cursor-pointer ease-in-out duration-500`}
                   >
                     <BsChevronRight />
                   </span>
                 )}
               </div>
             ) : (
-              <Link
-                to={menuItem.link}
-                className="flex items-center px-4 py-2 gap-2 hover:bg-[#c6c6c62a] transition duration-300 ease"
-              >
+              <p className="px-4 py-2 hover:bg-[#c6c6c62a] cursor-pointer">
                 {menuItem.title}
-              </Link>
+              </p>
             )}
 
             {openSubMenu[index] && menuItem.subMenu && (
               <div className="bg-[#c6c6c60e] flex flex-col">
                 {menuItem.subMenu.map((subItem, subIndex) => (
-                  <Link
+                  <p
                     key={subIndex}
-                    className="pl-12 leading-10 hover:bg-[#c6c6c62a] transition duration-200 ease-in-out"
-                    to={subItem.subLink}
+                    className="pl-10 leading-10 hover:bg-[#c6c6c62a] cursor-pointer"
                   >
                     {subItem.subTitle}
-                  </Link>
+                  </p>
                 ))}
               </div>
             )}

@@ -1,4 +1,5 @@
 import { useQuery } from "react-query";
+import { Link } from "react-router-dom";
 import {
   getBrandAPI,
   getCategoryAPI,
@@ -36,7 +37,8 @@ const BrandAndCategory = () => {
         </div>
         <div className="grid md:grid-cols-3 grid-cols-2 gap-2">
           {category.map((category) => (
-            <div
+            <Link
+              to={`/products?category=${category._id}`}
               key={category._id}
               className="border border-gray-400 p-0.5 flex items-center gap-1"
             >
@@ -46,7 +48,7 @@ const BrandAndCategory = () => {
                 alt=""
               />
               <p className="font-semibold">{category.name}</p>
-            </div>
+            </Link>
           ))}
         </div>
       </div>
@@ -58,7 +60,8 @@ const BrandAndCategory = () => {
         </div>
         <div className="grid md:grid-cols-3 grid-cols-2 gap-2">
           {brand.map((brand) => (
-            <div
+            <Link
+              to={`/products?brand=${brand._id}`}
               key={brand._id}
               className="border border-gray-400 p-0.5 flex items-center gap-1"
             >
@@ -68,7 +71,7 @@ const BrandAndCategory = () => {
                 alt=""
               />
               <p className="text-lg font-bold">{brand.name}</p>
-            </div>
+            </Link>
           ))}
         </div>
       </div>
