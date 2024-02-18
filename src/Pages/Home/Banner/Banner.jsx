@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
-import { getBannerAPI } from "../../../Components/Fetcher/Fetcher";
+import { getBannerAPI, photoUrl } from "../../../Components/Fetcher/Fetcher";
 
 const Banner = () => {
+  const photo = photoUrl;
+
   const {
     data: banner,
     isLoading: loading,
     error: error,
   } = useQuery("banner", () => getBannerAPI());
-  const photo = "http://localhost:3000/";
 
   const [currentIndex, setCurrentIndex] = useState(0);
   useEffect(() => {

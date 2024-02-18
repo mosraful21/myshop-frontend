@@ -8,6 +8,7 @@ import "./Products.css";
 
 const ProductsLayout = () => {
   const [openSidebarToggle, setOpenSidebarToggle] = useState(false);
+  const [isGridView, setIsGridView] = useState(true);
   const OpenSidebar = () => {
     setOpenSidebarToggle(!openSidebarToggle);
   };
@@ -24,21 +25,26 @@ const ProductsLayout = () => {
         <div className="flex items-center gap-3">
           <p className="flex items-center gap-2 text-gray-600">
             <span className="text-xl font-bold">View:</span>
-            <IoGridOutline className="h-5 w-5 mt-1 cursor-pointer" />
-            <FaList className="h-5 w-5 mt-1 cursor-pointer" />
+            <IoGridOutline
+              className={`h-5 w-5 mt-1 cursor-pointer ${
+                isGridView ? "text-blue-600" : ""
+              }`}
+              onClick={() => setIsGridView(true)}
+            />
+            <FaList
+              className={`h-5 w-5 mt-1 cursor-pointer ${
+                !isGridView ? "text-blue-600" : ""
+              }`}
+              onClick={() => setIsGridView(false)}
+            />
           </p>
 
-          {openSidebarToggle ? (
-            <ImFilter
-              onClick={OpenSidebar}
-              className="text-xl h-6 w-6 text-orange-600 font-bold xl:hidden"
-            />
-          ) : (
-            <ImFilter
-              onClick={OpenSidebar}
-              className="text-xl h-6 w-6 text-blue-700 font-bold xl:hidden"
-            />
-          )}
+          <ImFilter
+            onClick={OpenSidebar}
+            className={`text-xl h-6 w-6 font-bold ${
+              openSidebarToggle ? "text-orange-600" : "text-blue-700"
+            } xl:hidden`}
+          />
         </div>
       </header>
 
@@ -48,7 +54,7 @@ const ProductsLayout = () => {
           OpenSidebar={OpenSidebar}
         />
         <div className="product-container">
-          <Products />
+          <Products isGridView={isGridView} />
         </div>
       </div>
     </section>

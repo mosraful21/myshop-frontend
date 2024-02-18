@@ -2,10 +2,11 @@ import { useQuery } from "react-query";
 import {
   getBrandAPI,
   getCategoryAPI,
+  photoUrl,
 } from "../../../Components/Fetcher/Fetcher";
 
 const BrandAndCategory = () => {
-  const photo = "http://localhost:3000/";
+  const photo = photoUrl;
 
   const {
     data: brand,

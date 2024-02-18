@@ -7,6 +7,7 @@ import {
 import {
   getCategoryAPI,
   getProductAPI,
+  photoUrl,
 } from "../../../Components/Fetcher/Fetcher";
 import { useQuery } from "react-query";
 
@@ -16,12 +17,13 @@ const CategoryProduct = () => {
     setActiveTab(tab);
   };
 
+  const photo = photoUrl;
+
   const {
     data: products,
     isLoading: productLoading,
     error: productError,
   } = useQuery("products", getProductAPI);
-  const photo = "http://localhost:3000/";
 
   const {
     data: categories,
@@ -38,7 +40,14 @@ const CategoryProduct = () => {
   }
 
   const innerWidth = window.innerWidth;
-  const items = innerWidth >= 1536 ? 12 : innerWidth >= 1280 ? 10 : innerWidth >= 768 ? 8 : 8;
+  const items =
+    innerWidth >= 1536
+      ? 12
+      : innerWidth >= 1280
+      ? 10
+      : innerWidth >= 768
+      ? 8
+      : 8;
 
   return (
     <section className="md:mt-10 mt-5">

@@ -1,5 +1,5 @@
 import { useQuery } from "react-query";
-import { getProductAPI } from "../../../Components/Fetcher/Fetcher";
+import { getProductAPI, photoUrl } from "../../../Components/Fetcher/Fetcher";
 import {
   IoCartOutline,
   IoHeartOutline,
@@ -7,12 +7,13 @@ import {
 } from "react-icons/io5";
 
 const NewAndFlash = () => {
+  const photo = photoUrl;
+
   const {
     data: products,
     isLoading: productLoading,
     error: productError,
   } = useQuery("products", getProductAPI);
-  const photo = "http://localhost:3000/";
 
   if (productLoading) {
     return <div className="text-center font-semibold">Loading...</div>;
@@ -22,7 +23,8 @@ const NewAndFlash = () => {
   }
 
   const innerWidth = window.innerWidth;
-  const items = innerWidth >= 1280 ? 8 : innerWidth >= 1024 ? 6 : innerWidth >= 768 ? 6 : 6;
+  const items =
+    innerWidth >= 1280 ? 8 : innerWidth >= 1024 ? 6 : innerWidth >= 768 ? 6 : 6;
 
   return (
     <section className="grid lg:grid-cols-4 md:gap-3 md:mt-10 mt-5">

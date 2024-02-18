@@ -1,13 +1,17 @@
 import { useQuery } from "react-query";
-import { getShortBannerAPI } from "../../../Components/Fetcher/Fetcher";
+import {
+  getShortBannerAPI,
+  photoUrl,
+} from "../../../Components/Fetcher/Fetcher";
 
 const ShortBanner = () => {
+  const photo = photoUrl;
+
   const {
     data: shortBanner,
     isLoading: loading,
     error: error,
   } = useQuery("banner", () => getShortBannerAPI());
-  const photo = "http://localhost:3000/";
 
   if (loading) {
     return <div className="text-center font-semibold">Loading...</div>;

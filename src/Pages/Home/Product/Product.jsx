@@ -1,5 +1,5 @@
 import { useQuery } from "react-query";
-import { getProductAPI } from "../../../Components/Fetcher/Fetcher";
+import { getProductAPI, photoUrl } from "../../../Components/Fetcher/Fetcher";
 import {
   IoCartOutline,
   IoHeartOutline,
@@ -7,12 +7,13 @@ import {
 } from "react-icons/io5";
 
 const Product = () => {
+  const photo = photoUrl;
+
   const {
     data: products,
     isLoading: productLoading,
     error: productError,
   } = useQuery("products", getProductAPI);
-  const photo = "http://localhost:3000/";
 
   if (productLoading) {
     return <div className="text-center font-semibold">Loading...</div>;

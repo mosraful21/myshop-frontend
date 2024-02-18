@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { BsChevronRight } from "react-icons/bs";
-
 import { Link } from "react-router-dom";
 
 const menuItems = [
