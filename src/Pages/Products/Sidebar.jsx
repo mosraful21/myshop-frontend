@@ -1,43 +1,58 @@
 import { useState } from "react";
 import { BsChevronRight } from "react-icons/bs";
+import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
-
-const menuItems = [
-  { title: "Dashboard", link: "/dashboard" },
-  {
-    title: "Users",
-    subMenu: [
-      { subTitle: "Admin", subLink: "/dashboard/admin" },
-      { subTitle: "Customer", subLink: "/dashboard/customer" },
-    ],
-  },
-  {
-    title: "Banner",
-    subMenu: [
-      { subTitle: "Banner", subLink: "/dashboard/banner" },
-      { subTitle: "Brand", subLink: "/dashboard/brand" },
-    ],
-  },
-  {
-    title: "Upload Products",
-    subMenu: [
-      { subTitle: "Category", subLink: "/dashboard/category" },
-      { subTitle: "Sub Category", subLink: "/dashboard/subcategory" },
-      { subTitle: "Product", subLink: "/dashboard/product" },
-    ],
-  },
-];
+import {
+  getCategoryAPI,
+  getSubCategoryAPI,
+} from "../../Components/Fetcher/Fetcher";
 
 const Sidebar = ({ openSidebarToggle }) => {
-  const [openSubMenu, setOpenSubMenu] = useState(
-    new Array(menuItems.length).fill(false)
-  );
+  const {
+    data: category,
+    isLoading: categoryLoading,
+    error: categoryError,
+  } = useQuery("category", getCategoryAPI);
+
+  const {
+    data: subCategory,
+    isLoading: subCategoryLoading,
+    error: subCategoryError,
+  } = useQuery("subcategory", getSubCategoryAPI);
+
+  const dynamicMenuItems = [];
+  const categoryNames = [...new Set(category.map((category) => category.name))];
+  categoryNames.forEach((categoryName) => {
+    const subcategories = subCategory.filter(
+      (subcategory) => subcategory.category === categoryName
+    );
+    const categoryMenuItem = {
+      title: categoryName,
+      link: `/product/${categoryName.toLowerCase()}`,
+      subMenu: subcategories.map((subcategory) => ({
+        subTitle: subcategory.name,
+        subLink: `/product/${categoryName.toLowerCase()}/${subcategory._id}`,
+      })),
+    };
+    dynamicMenuItems.push(categoryMenuItem);
+  });
 
   const handleSubMenuToggle = (index) => {
     const newOpenSubMenu = [...openSubMenu];
     newOpenSubMenu[index] = !newOpenSubMenu[index];
     setOpenSubMenu(newOpenSubMenu);
   };
+
+  const [openSubMenu, setOpenSubMenu] = useState(
+    new Array(dynamicMenuItems.length).fill(false)
+  );
+
+  if (subCategoryLoading || categoryLoading) {
+    return <div className="text-center font-semibold">Loading...</div>;
+  }
+  if (subCategoryError || categoryError) {
+    return <div className="text-center font-semibold">Error fetching data</div>;
+  }
 
   return (
     <aside
@@ -51,23 +66,25 @@ const Sidebar = ({ openSidebarToggle }) => {
           </h1>
         </div>
 
-        {menuItems.map((menuItem, index) => (
+        {dynamicMenuItems.map((menuItem, index) => (
           <div key={index} className="text-xl">
-            {menuItem.subMenu ? (
+            {menuItem.subMenu && menuItem.subMenu.length > 0 ? (
               <div
                 className="flex items-center justify-between px-4 py-2 cursor-pointer hover:bg-[#c6c6c62a] transition duration-300 ease"
                 onClick={() => handleSubMenuToggle(index)}
               >
                 <span className="flex items-center gap-2">
-                  {menuItem.title}
+                  <Link to={menuItem.link}>{menuItem.title}</Link>
                 </span>
-                <span
-                  className={`transition-transform transform ${
-                    openSubMenu[index] ? "rotate-90" : "rotate-0"
-                  } ease-in-out duration-500`}
-                >
-                  <BsChevronRight />
-                </span>
+                {menuItem.subMenu && menuItem.subMenu.length > 0 && (
+                  <span
+                    className={`transition-transform transform ${
+                      openSubMenu[index] ? "rotate-90" : "rotate-0"
+                    } ease-in-out duration-500`}
+                  >
+                    <BsChevronRight />
+                  </span>
+                )}
               </div>
             ) : (
               <Link
