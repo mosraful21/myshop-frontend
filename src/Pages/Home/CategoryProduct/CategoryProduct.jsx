@@ -12,11 +12,6 @@ import {
 import { useQuery } from "react-query";
 
 const CategoryProduct = () => {
-  const [activeTab, setActiveTab] = useState("phone");
-  const handleTabClick = (tab) => {
-    setActiveTab(tab);
-  };
-
   const photo = photoUrl;
 
   const {
@@ -30,7 +25,12 @@ const CategoryProduct = () => {
     isLoading: categoryLoading,
     error: categoryError,
   } = useQuery("category", getCategoryAPI);
-  const category = categories?.map((category) => category.name);
+
+  const [activeTab, setActiveTab] = useState(categories[0]._id);
+
+  const handleTabClick = (tab) => {
+    setActiveTab(tab);
+  };
 
   if (productLoading || categoryLoading) {
     return <div className="text-center font-semibold">Loading...</div>;
@@ -38,6 +38,12 @@ const CategoryProduct = () => {
   if (productError || categoryError) {
     return <div className="text-center font-semibold">Error fetching data</div>;
   }
+
+  const categoryWithData = categories.filter((category) =>
+    products.some((product) => product.category._id === category._id)
+  );
+  
+  const displayCategory = categoryWithData.slice(0, 3);
 
   const innerWidth = window.innerWidth;
   const items =
@@ -54,22 +60,22 @@ const CategoryProduct = () => {
       {/* Category Button */}
       <div className="flex flex-wrap items-center justify-between mb-2 border-b-2 border-gray-400">
         <h1 className="text-3xl font-bold text-gray-600">Products</h1>
-        <div className="flex justify-center">
-          {category.map((name, index) => (
+        <div className="flex flex-wrap gap-y-1 justify-center">
+          {displayCategory.map((category, index) => (
             <button
               key={index}
               className={`${
-                activeTab === name.toLowerCase() ? "bg-blue-600" : "bg-gray-400"
+                activeTab === category._id ? "bg-blue-600" : "bg-gray-400"
               } text-white text-sm font-semibold px-2 py-1 ${
                 index === 0
                   ? "rounded-l"
-                  : index === category.length - 1
+                  : index === displayCategory.length - 1
                   ? "rounded-r"
                   : ""
               }`}
-              onClick={() => handleTabClick(name.toLowerCase())}
+              onClick={() => handleTabClick(category._id)}
             >
-              {name}
+              {category.name}
             </button>
           ))}
         </div>
@@ -78,7 +84,7 @@ const CategoryProduct = () => {
       {/* Product Data */}
       <div className="grid 2xl:grid-cols-6 xl:grid-cols-5 md:grid-cols-4 grid-cols-2 gap-2">
         {products
-          .filter((product) => product.category.toLowerCase() === activeTab)
+          .filter((product) => product.category._id === activeTab)
           .slice(0, items)
           .map((product) => (
             <div key={product._id} className="product-card">

@@ -11,14 +11,14 @@ const Product = () => {
 
   const {
     data: products,
-    isLoading: productLoading,
-    error: productError,
+    isLoading,
+    error,
   } = useQuery("products", getProductAPI);
 
-  if (productLoading) {
+  if (isLoading) {
     return <div className="text-center font-semibold">Loading...</div>;
   }
-  if (productError) {
+  if (error) {
     return <div className="text-center font-semibold">Error fetching data</div>;
   }
 

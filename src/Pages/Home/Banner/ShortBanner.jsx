@@ -1,24 +1,19 @@
 import { useQuery } from "react-query";
-import {
-  getShortBannerAPI,
-  photoUrl,
-} from "../../../Components/Fetcher/Fetcher";
+import { getBannerAPI, photoUrl } from "../../../Components/Fetcher/Fetcher";
 
 const ShortBanner = () => {
   const photo = photoUrl;
 
-  const {
-    data: shortBanner,
-    isLoading: loading,
-    error: error,
-  } = useQuery("banner", () => getShortBannerAPI());
+  const { data, isLoading, error } = useQuery("banner", () => getBannerAPI());
+  const shortBanner = data.filter((banner) => banner.type === "shortBanner");
 
-  if (loading) {
+  if (isLoading) {
     return <div className="text-center font-semibold">Loading...</div>;
   }
   if (error) {
     return <div className="text-center font-semibold">Error fetching data</div>;
   }
+
   return (
     <section className="md:mt-4 mt-2 grid grid-cols-3 gap-2">
       {shortBanner.slice(0, 3).map((banner) => (

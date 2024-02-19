@@ -32,12 +32,13 @@ const Products = ({ isGridView }) => {
   }
 
   let filteredProducts = [...data];
+  console.log(filteredProducts)
 
   if (selectedCategory || selectedBrand) {
     filteredProducts = filteredProducts.filter((product) => {
       return (
-        (!selectedCategory || product.category === selectedCategory) &&
-        (!selectedBrand || product.brand === selectedBrand)
+        (!selectedCategory || product.category._id === selectedCategory) &&
+        (!selectedBrand || product.brand._id === selectedBrand)
       );
     });
   }
@@ -70,8 +71,8 @@ const Products = ({ isGridView }) => {
 
               <div className="px-1 mb-2 details">
                 <p className="font-semibold line-clamp-2">{product.name}</p>
-                <p>Category: {product.category}</p>
-                <p>Brand: {product.brand}</p>
+                <p>Category: {product.category.name}</p>
+                <p>Brand: {product.brand.name}</p>
                 <p className="text-lg text-orange-600 font-semibold">
                   {product.price - product.discount}
                   <span className="text-base font-serif">৳</span>

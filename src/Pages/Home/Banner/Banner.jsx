@@ -5,11 +5,8 @@ import { getBannerAPI, photoUrl } from "../../../Components/Fetcher/Fetcher";
 const Banner = () => {
   const photo = photoUrl;
 
-  const {
-    data: banner,
-    isLoading: loading,
-    error: error,
-  } = useQuery("banner", () => getBannerAPI());
+  const { data, isLoading, error } = useQuery("banner", () => getBannerAPI());
+  const banner = data.filter((banner) => banner.type === "banner");
 
   const [currentIndex, setCurrentIndex] = useState(0);
   useEffect(() => {
@@ -22,7 +19,7 @@ const Banner = () => {
     setCurrentIndex(index);
   };
 
-  if (loading) {
+  if (isLoading) {
     return <div className="text-center font-semibold">Loading...</div>;
   }
   if (error) {

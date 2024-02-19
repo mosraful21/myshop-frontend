@@ -8,13 +8,6 @@ export const getBannerAPI = async () => {
   return banner;
 };
 
-// Short Banner Data : ----------------------------------
-export const getShortBannerAPI = async () => {
-  const res = await fetch("http://localhost:3000/api/banner");
-  const shortBanner = await res.json();
-  return shortBanner;
-};
-
 // Category Data : --------------------------------------
 export const getCategoryAPI = async () => {
   const res = await fetch("http://localhost:3000/api/categories");
