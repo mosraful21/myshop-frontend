@@ -24,8 +24,7 @@ const NewAndFlash = () => {
   }
 
   const innerWidth = window.innerWidth;
-  const items =
-    innerWidth >= 1280 ? 8 : innerWidth >= 1024 ? 6 : innerWidth >= 768 ? 6 : 6;
+  const items = innerWidth >= 1280 ? 8 : innerWidth >= 1024 ? 6 : innerWidth >= 768 ? 6 : 6;
 
   return (
     <section className="grid lg:grid-cols-4 md:gap-3 md:mt-10 mt-5">
@@ -35,7 +34,7 @@ const NewAndFlash = () => {
         <p className="text-2xl font-bold">New Arrivals</p>
         <p>Time</p>
         <Link
-          to="/"
+          to="/products?newarrivals=products"
           className="bg-orange-500 px-4 py-1 font-semibold text-white"
         >
           Shop Now
@@ -45,10 +44,16 @@ const NewAndFlash = () => {
       {/* Flash Sale Section */}
       {products.length !== 0 ? (
         <div className="lg:col-span-3 md:mt-0 mt-4">
-          <div className="mb-2 border-b-2 border-gray-400">
+          <div className="mb-2 border-b-2 border-gray-400 flex items-center justify-between">
             <p className="text-3xl font-bold text-gray-600">
               Flash Sale Today!
             </p>
+            <Link
+              to="/products?flashsales=products"
+              className="bg-blue-600 px-3 py-0.5 rounded-md text-white font-bold"
+            >
+              See All
+            </Link>
           </div>
           <div className="grid xl:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-2">
             {products

@@ -1,5 +1,5 @@
 import { useLocation } from "react-router-dom";
-import { useState, useEffect } from "react";
+// import { useState, useEffect } from "react";
 import { useQuery } from "react-query";
 import { getProductAPI, photoUrl } from "../../Components/Fetcher/Fetcher";
 import {
@@ -11,16 +11,10 @@ import {
 const Products = ({ isGridView }) => {
   const photo = photoUrl;
   const location = useLocation();
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [selectedBrand, setSelectedBrand] = useState(null);
-
-  useEffect(() => {
-    const searchParams = new URLSearchParams(location.search);
-    const categoryParam = searchParams.get("category");
-    setSelectedCategory(categoryParam);
-    const brandParam = searchParams.get("brand");
-    setSelectedBrand(brandParam);
-  }, [location.search]);
+  const isBrand = new URLSearchParams(location.search).get("brand");
+  const isCategory = new URLSearchParams(location.search).get("category");
+  const isFlashSale = new URLSearchParams(location.search).get("flashsales") === "products";
+  const isNewArrival = new URLSearchParams(location.search).get("newarrivals") === "products";
 
   const { data, isLoading, error } = useQuery("products", getProductAPI);
 
@@ -32,16 +26,14 @@ const Products = ({ isGridView }) => {
   }
 
   let filteredProducts = [...data];
-  console.log(filteredProducts)
 
-  if (selectedCategory || selectedBrand) {
-    filteredProducts = filteredProducts.filter((product) => {
-      return (
-        (!selectedCategory || product.category._id === selectedCategory) &&
-        (!selectedBrand || product.brand._id === selectedBrand)
-      );
-    });
-  }
+  filteredProducts = filteredProducts.filter((product) => {
+    const brand = !isBrand || product.brand._id === isBrand;
+    const category = !isCategory || product.category._id === isCategory;
+    const FlashSale = !isFlashSale || product.flashSale === true;
+    const newArrival = !isNewArrival || product.newProduct === true;
+    return brand && category && FlashSale && newArrival;
+  });
 
   return (
     <section>
@@ -71,8 +63,6 @@ const Products = ({ isGridView }) => {
 
               <div className="px-1 mb-2 details">
                 <p className="font-semibold line-clamp-2">{product.name}</p>
-                <p>Category: {product.category.name}</p>
-                <p>Brand: {product.brand.name}</p>
                 <p className="text-lg text-orange-600 font-semibold">
                   {product.price - product.discount}
                   <span className="text-base font-serif">৳</span>
