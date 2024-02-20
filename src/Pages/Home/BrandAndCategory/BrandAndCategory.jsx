@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import {
   getBrandAPI,
   getCategoryAPI,
+  getProductAPI,
   photoUrl,
 } from "../../../Components/Fetcher/Fetcher";
 
@@ -21,23 +22,37 @@ const BrandAndCategory = () => {
     error: categoryError,
   } = useQuery("category", getCategoryAPI);
 
-  if (brandLoading || categoryLoading) {
+  const {
+    data: products,
+    isLoading: productLoading,
+    error: productError,
+  } = useQuery("products", getProductAPI);
+
+  if (brandLoading || categoryLoading || productLoading) {
     return <div className="text-center font-semibold">Loading...</div>;
   }
-  if (brandError || categoryError) {
+  if (brandError || categoryError || productError) {
     return <div className="text-center font-semibold">Error fetching data</div>;
   }
+
+  const categoryWithData = category.filter((category) =>
+    products.some((product) => product.category._id === category._id)
+  );
+
+  const brandWithData = brand.filter((brand) =>
+    products.some((product) => product.brand._id === brand._id)
+  );
 
   return (
     <section className="grid xl:grid-cols-2 gap-5 md:mt-10 mt-5">
       {/* Category Section */}
-      {category.length !== 0 ? (
+      {categoryWithData.length !== 0 ? (
         <div className="">
           <div className="mb-2 border-b-2 border-gray-400">
             <p className="text-xl font-bold">Category</p>
           </div>
           <div className="grid md:grid-cols-3 grid-cols-2 gap-2">
-            {category.map((category) => (
+            {categoryWithData.map((category) => (
               <Link
                 to={`/products?category=${category._id}`}
                 key={category._id}
@@ -58,13 +73,13 @@ const BrandAndCategory = () => {
       )}
 
       {/* Brand Section */}
-      {brand.length !== 0 ? (
+      {brandWithData.length !== 0 ? (
         <div className="">
           <div className="mb-2 border-b-2 border-gray-400">
             <p className="text-xl font-bold">Brand</p>
           </div>
           <div className="grid md:grid-cols-3 grid-cols-2 gap-2">
-            {brand.map((brand) => (
+            {brandWithData.map((brand) => (
               <Link
                 to={`/products?brand=${brand._id}`}
                 key={brand._id}

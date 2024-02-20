@@ -1,43 +1,16 @@
-import { useLocation } from "react-router-dom";
-// import { useState, useEffect } from "react";
-import { useQuery } from "react-query";
-import { getProductAPI, photoUrl } from "../../Components/Fetcher/Fetcher";
 import {
   IoCartOutline,
   IoHeartOutline,
   IoShareSocialOutline,
 } from "react-icons/io5";
+import { photoUrl } from "../../Components/Fetcher/Fetcher";
 
-const Products = ({ isGridView }) => {
+const Products = ({ isGridView, products }) => {
   const photo = photoUrl;
-  const location = useLocation();
-  const isBrand = new URLSearchParams(location.search).get("brand");
-  const isCategory = new URLSearchParams(location.search).get("category");
-  const isFlashSale = new URLSearchParams(location.search).get("flashsales") === "products";
-  const isNewArrival = new URLSearchParams(location.search).get("newarrivals") === "products";
-
-  const { data, isLoading, error } = useQuery("products", getProductAPI);
-
-  if (isLoading) {
-    return <div className="text-center font-semibold">Loading...</div>;
-  }
-  if (error) {
-    return <error className="text-center font-semibold">Error Data</error>;
-  }
-
-  let filteredProducts = [...data];
-
-  filteredProducts = filteredProducts.filter((product) => {
-    const brand = !isBrand || product.brand._id === isBrand;
-    const category = !isCategory || product.category._id === isCategory;
-    const FlashSale = !isFlashSale || product.flashSale === true;
-    const newArrival = !isNewArrival || product.newProduct === true;
-    return brand && category && FlashSale && newArrival;
-  });
 
   return (
     <section>
-      {filteredProducts.length !== 0 ? (
+      {products.length !== 0 ? (
         <div
           className={
             isGridView
@@ -45,7 +18,7 @@ const Products = ({ isGridView }) => {
               : "grid grid-cols-1 gap-2 px-1"
           }
         >
-          {filteredProducts.map((product) => (
+          {products.map((product) => (
             <div
               key={product._id}
               className={isGridView ? "grid-card" : "list-card"}
