@@ -23,7 +23,7 @@ const Sidebar = ({ openSidebarToggle }) => {
   const categoryNames = [...new Set(category.map((category) => category.name))];
   categoryNames.forEach((categoryName) => {
     const subcategories = subCategory.filter(
-      (subcategory) => subcategory.category === categoryName
+      (subcategory) => subcategory.category.name === categoryName
     );
     const categoryMenuItem = {
       title: categoryName,
@@ -64,9 +64,9 @@ const Sidebar = ({ openSidebarToggle }) => {
         </div>
 
         {dynamicMenuItems.map((menuItem, index) => (
-          <div key={index} className="text-xl">
+          <div key={index} className="text-lg capitalize">
             {menuItem.subMenu && menuItem.subMenu.length > 0 ? (
-              <div className="flex items-center justify-between px-4 py-2 hover:bg-[#c6c6c62a]">
+              <div className="flex items-center justify-between px-4 py-1.5 hover:bg-[#c6c6c62a]">
                 <p className="cursor-pointer">{menuItem.title}</p>
 
                 {menuItem.subMenu && menuItem.subMenu.length > 0 && (
@@ -81,8 +81,8 @@ const Sidebar = ({ openSidebarToggle }) => {
                 )}
               </div>
             ) : (
-              <p className="px-4 py-2 hover:bg-[#c6c6c62a] cursor-pointer">
-                {menuItem.title}
+              <p className="px-4 py-1.5 hover:bg-[#c6c6c62a]">
+                <span className="cursor-pointer">{menuItem.title}</span>
               </p>
             )}
 
@@ -91,9 +91,9 @@ const Sidebar = ({ openSidebarToggle }) => {
                 {menuItem.subMenu.map((subItem, subIndex) => (
                   <p
                     key={subIndex}
-                    className="pl-10 leading-10 hover:bg-[#c6c6c62a] cursor-pointer"
+                    className="pl-10 py-1 text-gray-800 hover:bg-[#c6c6c62a]"
                   >
-                    {subItem.subTitle}
+                    <span className="cursor-pointer">{subItem.subTitle}</span>
                   </p>
                 ))}
               </div>

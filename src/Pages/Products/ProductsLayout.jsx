@@ -9,13 +9,6 @@ import Products from "./Products";
 import { useQuery } from "react-query";
 import { getProductAPI } from "../../Components/Fetcher/Fetcher";
 
-// const breadcrumbItems = [
-//   { label: "Home", link: "/" },
-//   { label: "Category", link: "/category" },
-//   { label: "Subcategory", link: "/category/subcategory" },
-//   { label: "Current Page", link: "/category/subcategory/current" },
-// ];
-
 const ProductsLayout = () => {
   const [openSidebarToggle, setOpenSidebarToggle] = useState(false);
   const [isGridView, setIsGridView] = useState(true);
@@ -26,10 +19,8 @@ const ProductsLayout = () => {
   const location = useLocation();
   const isBrand = new URLSearchParams(location.search).get("brand");
   const isCategory = new URLSearchParams(location.search).get("category");
-  const isFlashSale =
-    new URLSearchParams(location.search).get("flashsales") === "products";
-  const isNewArrival =
-    new URLSearchParams(location.search).get("newarrivals") === "products";
+  const isFlashSale = new URLSearchParams(location.search).get("flashsales") === "products";
+  const isNewArrival = new URLSearchParams(location.search).get("newarrivals") === "products";
 
   const { data, isLoading, error } = useQuery("products", getProductAPI);
 
