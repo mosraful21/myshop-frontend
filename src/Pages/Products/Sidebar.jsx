@@ -1,56 +1,7 @@
-import { useState } from "react";
 import { BsChevronRight } from "react-icons/bs";
-import { useQuery } from "react-query";
-import {
-  getCategoryAPI,
-  getSubCategoryAPI,
-} from "../../Components/Fetcher/Fetcher";
+import { Link } from "react-router-dom";
 
-const Sidebar = ({ openSidebarToggle }) => {
-  const {
-    data: category,
-    isLoading: categoryLoading,
-    error: categoryError,
-  } = useQuery("category", getCategoryAPI);
-
-  const {
-    data: subCategory,
-    isLoading: subCategoryLoading,
-    error: subCategoryError,
-  } = useQuery("subcategory", getSubCategoryAPI);
-
-  const dynamicMenuItems = [];
-  const categoryNames = [...new Set(category.map((category) => category.name))];
-  categoryNames.forEach((categoryName) => {
-    const subcategories = subCategory.filter(
-      (subcategory) => subcategory.category.name === categoryName
-    );
-    const categoryMenuItem = {
-      title: categoryName,
-      subMenu: subcategories.map((subcategory) => ({
-        subTitle: subcategory.name,
-      })),
-    };
-    dynamicMenuItems.push(categoryMenuItem);
-  });
-
-  const handleSubMenuToggle = (index) => {
-    const newOpenSubMenu = [...openSubMenu];
-    newOpenSubMenu[index] = !newOpenSubMenu[index];
-    setOpenSubMenu(newOpenSubMenu);
-  };
-
-  const [openSubMenu, setOpenSubMenu] = useState(
-    new Array(dynamicMenuItems.length).fill(false)
-  );
-
-  if (subCategoryLoading || categoryLoading) {
-    return <div className="text-center font-semibold">Loading...</div>;
-  }
-  if (subCategoryError || categoryError) {
-    return <div className="text-center font-semibold">Error fetching data</div>;
-  }
-
+const Sidebar = ({ openSidebarToggle, brand, category }) => {
   return (
     <aside
       id="sidebar"
@@ -63,43 +14,44 @@ const Sidebar = ({ openSidebarToggle }) => {
           </h1>
         </div>
 
-        {dynamicMenuItems.map((menuItem, index) => (
-          <div key={index} className="text-lg capitalize">
-            {menuItem.subMenu && menuItem.subMenu.length > 0 ? (
-              <div className="flex items-center justify-between px-4 py-1.5 hover:bg-[#c6c6c62a]">
-                <p className="cursor-pointer">{menuItem.title}</p>
-
-                {menuItem.subMenu && menuItem.subMenu.length > 0 && (
-                  <span
-                    onClick={() => handleSubMenuToggle(index)}
-                    className={`transition-transform transform ${
-                      openSubMenu[index] ? "rotate-90" : "rotate-0"
-                    } cursor-pointer ease-in-out duration-500`}
-                  >
-                    <BsChevronRight />
-                  </span>
-                )}
-              </div>
-            ) : (
-              <p className="px-4 py-1.5 hover:bg-[#c6c6c62a]">
-                <span className="cursor-pointer">{menuItem.title}</span>
-              </p>
-            )}
-
-            {openSubMenu[index] && menuItem.subMenu && (
-              <div className="bg-[#c6c6c60e] flex flex-col">
-                {menuItem.subMenu.map((subItem, subIndex) => (
-                  <p
-                    key={subIndex}
-                    className="pl-10 py-1 text-gray-800 hover:bg-[#c6c6c62a]"
-                  >
-                    <span className="cursor-pointer">{subItem.subTitle}</span>
-                  </p>
-                ))}
-              </div>
-            )}
+        {/* Category and Sub Category */}
+        <div className="mt-2">
+          <div className="px-4">
+            <h1 className="text-xl font-bold border-b-2 border-gray-400">
+              Categories
+            </h1>
           </div>
-        ))}
+          {category.map((category) => (
+            <div key={category._id}>
+              <p className="px-4 py-1.5 hover:bg-[#c6c6c62a] text-lg capitalize flex items-center justify-between">
+                <Link to={`/products?category=${category._id}`}>
+                  {category.name}
+                </Link>
+                <span
+                  className={`transition-transform transform cursor-pointer ease-in-out duration-500`}
+                >
+                  <BsChevronRight />
+                </span>
+              </p>
+            </div>
+          ))}
+        </div>
+
+        {/* Brand */}
+        <div className="mt-2">
+          <div className="px-4">
+            <h1 className="text-xl font-bold border-b-2 border-gray-400">
+              Brands
+            </h1>
+          </div>
+          {brand.map((brand) => (
+            <div key={brand._id}>
+              <p className="px-4 py-1.5 hover:bg-[#c6c6c62a] text-lg capitalize">
+                <Link to={`/products?brand=${brand._id}`}>{brand.name}</Link>
+              </p>
+            </div>
+          ))}
+        </div>
       </div>
     </aside>
   );

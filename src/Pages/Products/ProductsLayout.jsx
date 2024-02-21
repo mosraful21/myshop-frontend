@@ -3,11 +3,16 @@ import "./Products.css";
 import { IoGridOutline } from "react-icons/io5";
 import { FaList } from "react-icons/fa6";
 import { ImFilter } from "react-icons/im";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import Products from "./Products";
 import { useQuery } from "react-query";
-import { getProductAPI } from "../../Components/Fetcher/Fetcher";
+import {
+  getCategoryAPI,
+  getSubCategoryAPI,
+  getProductAPI,
+  getBrandAPI,
+} from "../../Components/Fetcher/Fetcher";
 
 const ProductsLayout = () => {
   const [openSidebarToggle, setOpenSidebarToggle] = useState(false);
@@ -22,17 +27,40 @@ const ProductsLayout = () => {
   const isFlashSale = new URLSearchParams(location.search).get("flashsales") === "products";
   const isNewArrival = new URLSearchParams(location.search).get("newarrivals") === "products";
 
-  const { data, isLoading, error } = useQuery("products", getProductAPI);
+  const {
+    data: category,
+    isLoading: categoryLoading,
+    error: categoryError,
+  } = useQuery("category", getCategoryAPI);
 
-  if (isLoading) {
+  const {
+    data: subCategory,
+    isLoading: subCategoryLoading,
+    error: subCategoryError,
+  } = useQuery("subcategory", getSubCategoryAPI);
+
+  const {
+    data: product,
+    isLoading: productLoading,
+    error: productError,
+  } = useQuery("products", getProductAPI);
+
+  const {
+    data: brand,
+    isLoading: brnadLoading,
+    error: brnadError,
+  } = useQuery("brand", getBrandAPI);
+
+  if (categoryLoading || subCategoryLoading || productLoading || brnadLoading) {
     return <div className="text-center font-semibold">Loading...</div>;
   }
-  if (error) {
-    return <div className="text-center font-semibold">Error Data</div>;
+  if (categoryError || subCategoryError || productError || brnadError) {
+    return <div className="text-center font-semibold">Data Not Found</div>;
   }
 
-  let products = [...data];
+  let products = [...product];
 
+  // Filtered Products
   const filteredProducts = products.filter((product) => {
     const brand = !isBrand || product.brand._id === isBrand;
     const category = !isCategory || product.category._id === isCategory;
@@ -45,23 +73,23 @@ const ProductsLayout = () => {
   const breadcrumbItems = [{ label: "Home", link: "/" }];
 
   if (isBrand) {
-    const brandItem = data.find((item) => item.brand._id === isBrand);
-    if (brandItem) {
-      breadcrumbItems.push({ label: "Brand", link: "#" });
-      breadcrumbItems.push({ label: brandItem.brand.name, link: "#" });
+    const items = product.find((item) => item.brand._id === isBrand);
+    if (items) {
+      breadcrumbItems.push({ label: "Brand" });
+      breadcrumbItems.push({ label: items.brand.name });
     }
   }
 
   if (isCategory) {
-    const categoryItem = data.find((item) => item.category._id === isCategory);
-    if (categoryItem) {
-      breadcrumbItems.push({ label: "Category", link: "#" });
-      breadcrumbItems.push({ label: categoryItem.category.name, link: "#" });
+    const items = product.find((item) => item.category._id === isCategory);
+    if (items) {
+      breadcrumbItems.push({ label: "Category" });
+      breadcrumbItems.push({ label: items.category.name });
     }
   }
 
-  if (isFlashSale) breadcrumbItems.push({ label: "Flash Sales", link: "#" });
-  if (isNewArrival) breadcrumbItems.push({ label: "New Arrivals", link: "#" });
+  if (isFlashSale) breadcrumbItems.push({ label: "Flash Sales" });
+  if (isNewArrival) breadcrumbItems.push({ label: "New Arrivals" });
 
   return (
     <section className="container">
@@ -69,9 +97,9 @@ const ProductsLayout = () => {
         <ol className="flex items-center justify-center">
           {breadcrumbItems.map((item, index) => (
             <li key={index}>
-              <a href={item.link} className="text-gray-600">
+              <Link to={item.link} className="text-gray-600">
                 {item.label}
-              </a>
+              </Link>
               {index < breadcrumbItems.length - 1 && (
                 <span className="mx-1">/</span>
               )}
@@ -113,6 +141,9 @@ const ProductsLayout = () => {
         <Sidebar
           openSidebarToggle={openSidebarToggle}
           OpenSidebar={OpenSidebar}
+          brand={brand}
+          category={category}
+          subCategory={subCategory}
         />
         <div className="product-container">
           <Products isGridView={isGridView} products={filteredProducts} />
