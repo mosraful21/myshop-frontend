@@ -14,8 +14,8 @@ const Products = ({ isGridView, products }) => {
         <div
           className={
             isGridView
-              ? "grid 2xl:grid-cols-5 md:grid-cols-4 grid-cols-2 gap-2 px-1"
-              : "grid grid-cols-1 gap-2 px-1"
+              ? "grid 2xl:grid-cols-5 md:grid-cols-4 grid-cols-2 gap-2 px-1 mt-1 mb-1"
+              : "grid grid-cols-1 gap-2 px-1 mt-1 mb-1"
           }
         >
           {products.map((product) => (
@@ -23,12 +23,12 @@ const Products = ({ isGridView, products }) => {
               key={product._id}
               className={isGridView ? "grid-card" : "list-card"}
             >
-              <div className="image">
+              <div className="photo">
                 <img src={photo + product.photos[0]} alt="" />
                 <div className="panel space-y-2">
-                  <IoCartOutline className="h-[24px] w-[24px] text-gray-700 hover:text-orange-600" />
-                  <IoHeartOutline className="h-[21px] w-[21px] text-gray-700 hover:text-orange-600" />
-                  <IoShareSocialOutline className="h-[20px] w-[20px] text-gray-700 hover:text-orange-600" />
+                  <IoCartOutline className="h-[24px] w-[24px] text-white hover:text-orange-600" />
+                  <IoHeartOutline className="h-[21px] w-[21px] text-white hover:text-orange-600" />
+                  <IoShareSocialOutline className="h-[20px] w-[20px] text-white hover:text-orange-600" />
                 </div>
 
                 <button>Add to Cart</button>
@@ -45,20 +45,16 @@ const Products = ({ isGridView, products }) => {
                     {product.price}
                     <span className="font-serif">৳</span>
                   </del>
-                  <span className="text-sm ml-1">
-                    -
-                    {parseFloat(
-                      (product.discount / product.price) * 100
-                    ).toFixed(1)}
-                    %
+                  <span className="text-sm ml-1 text-gray-700 font-semibold">
+                    -{Math.round((product.discount / product.price) * 100)}%
                   </span>
                 </p>
                 <p
                   className={
-                    isGridView ? "hidden" : "md:block hidden line-clamp-3"
+                    isGridView ? "hidden" : "md:block hidden"
                   }
                 >
-                  {product.details}
+                  <span className="line-clamp-2">{product.details}</span>
                 </p>
               </div>
             </div>
