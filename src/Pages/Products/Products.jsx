@@ -4,6 +4,7 @@ import {
   IoShareSocialOutline,
 } from "react-icons/io5";
 import { photoUrl } from "../../Components/Fetcher/Fetcher";
+import { Link } from "react-router-dom";
 
 const Products = ({ isGridView, products }) => {
   const photo = photoUrl;
@@ -35,7 +36,9 @@ const Products = ({ isGridView, products }) => {
               </div>
 
               <div className="px-1 mb-2 details">
-                <p className="font-semibold line-clamp-2">{product.name}</p>
+                <Link to={`/products/details/${product._id}`} className="font-semibold line-clamp-2">
+                  {product.name}
+                </Link>
                 <p className="text-lg text-orange-600 font-semibold">
                   {product.price - product.discount}
                   <span className="text-base font-serif">৳</span>
@@ -49,11 +52,7 @@ const Products = ({ isGridView, products }) => {
                     -{Math.round((product.discount / product.price) * 100)}%
                   </span>
                 </p>
-                <p
-                  className={
-                    isGridView ? "hidden" : "md:block hidden"
-                  }
-                >
+                <p className={isGridView ? "hidden" : "md:block hidden"}>
                   <span className="line-clamp-2">{product.details}</span>
                 </p>
               </div>
