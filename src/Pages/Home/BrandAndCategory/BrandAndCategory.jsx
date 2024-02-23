@@ -35,12 +35,20 @@ const BrandAndCategory = () => {
     return <div className="text-center font-semibold">Error fetching data</div>;
   }
 
-  const categoryWithData = category.filter((category) =>
-    products.some((product) => product.category._id === category._id)
+  // Filter category with associated products and status === true
+  const categoryWithData = category.filter((categoryItem) =>
+    products.some(
+      (product) =>
+        product.category._id === categoryItem._id && product.status === true
+    )
   );
 
-  const brandWithData = brand.filter((brand) =>
-    products.some((product) => product.brand._id === brand._id)
+  // Filter brand with associated products and status === true
+  const brandWithData = brand.filter((brandItem) =>
+    products.some(
+      (product) =>
+        product.brand._id === brandItem._id && product.status === true
+    )
   );
 
   return (

@@ -26,8 +26,12 @@ const CategoryProduct = () => {
     error: categoryError,
   } = useQuery("category", getCategoryAPI);
 
-  const categoryWithData = category.filter((category) =>
-    products.some((product) => product.category._id === category._id)
+  // Filter category with associated products having status === true
+  const categoryWithData = category.filter((categoryItem) =>
+    products.some(
+      (product) =>
+        product.category._id === categoryItem._id && product.status === true
+    )
   );
 
   const displayCategory = categoryWithData.slice(0, 3);
@@ -56,7 +60,7 @@ const CategoryProduct = () => {
 
   return (
     <section>
-      {products.length !== 0 ? (
+      {displayCategory.length !== 0 ? (
         <div className="md:mt-10 mt-5">
           {/* Category Button */}
           <div className="flex flex-wrap items-center justify-between mb-2 border-b-2 border-gray-400">
@@ -87,7 +91,10 @@ const CategoryProduct = () => {
           {/* Product Data */}
           <div className="grid 2xl:grid-cols-6 xl:grid-cols-5 md:grid-cols-4 grid-cols-2 gap-2">
             {products
-              .filter((product) => product.category._id === activeTab)
+              .filter(
+                (product) =>
+                  product.status === true && product.category._id === activeTab
+              )
               .slice(0, items)
               .map((product) => (
                 <div key={product._id} className="product-card">
@@ -108,15 +115,19 @@ const CategoryProduct = () => {
                       {product.price - product.discount}
                       <span className="text-base font-serif">৳</span>
                     </p>
-                    <p className="-mt-1.5">
-                      <del className="text-sm text-gray-500">
-                        {product.price}
-                        <span className="font-serif">৳</span>
-                      </del>
-                      <span className="text-sm ml-1 text-gray-700 font-semibold">
-                        -{Math.round((product.discount / product.price) * 100)}%
-                      </span>
-                    </p>
+                    {product.discount > 0 && (
+                      <p className="-mt-1.5">
+                        <del className="text-sm text-gray-500">
+                          {product.price}
+                          <span className="font-serif">৳</span>
+                        </del>
+                        <span className="text-sm ml-1 text-gray-700 font-semibold">
+                          -
+                          {Math.round((product.discount / product.price) * 100)}
+                          %
+                        </span>
+                      </p>
+                    )}
                   </div>
                 </div>
               ))}

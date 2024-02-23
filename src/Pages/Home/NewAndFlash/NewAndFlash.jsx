@@ -29,14 +29,15 @@ const NewAndFlash = () => {
 
   return (
     <section className="grid lg:grid-cols-4 md:gap-3 md:mt-10 mt-5">
-      {/* New Arrivals Section */}
-      {products.filter((p) => p.newProduct === true).length !== 0 ? (
+      {/* Flash Sale Section */}
+      {products.filter((p) => p.status === true && p.flashSale === true)
+        .length !== 0 ? (
         <div className="flex flex-col text-center items-center justify-center rounded md:mt-0 mt-4 p-4 space-y-1 bg-gradient-to-r from-[#2D9596] to-[#9BCF53]">
           <p>Season Sale!</p>
-          <p className="text-2xl font-bold">New Arrivals</p>
+          <p className="text-2xl font-bold">Flash Sales</p>
           <p>Time</p>
           <Link
-            to="/products?newarrivals=products"
+            to="/products?flashsales=products"
             className="bg-orange-500 px-4 py-1 font-semibold text-white"
           >
             Shop Now
@@ -46,21 +47,21 @@ const NewAndFlash = () => {
         ""
       )}
 
-      {/* Flash Sale Section */}
-      {products.filter((p) => p.flashSale === true).length !== 0 ? (
+      {/* New Arrivals Section */}
+      {products.filter((p) => p.status === true && p.newProduct === true)
+        .length !== 0 ? (
         <div
           className={
-            products.filter((p) => p.newProduct === true).length !== 0
+            products.filter((p) => p.status === true && p.flashSale === true)
+              .length !== 0
               ? "lg:col-span-3"
               : "lg:col-span-4 md:mt-0 mt-4"
           }
         >
           <div className="mb-2 border-b-2 border-gray-400 flex items-center justify-between">
-            <p className="text-3xl font-bold text-gray-600">
-              Flash Sale Today!
-            </p>
+            <p className="text-3xl font-bold text-gray-600">New Arrivals</p>
             <Link
-              to="/products?flashsales=products"
+              to="/products?newarrivals=products"
               className="bg-blue-600 px-3 py-0.5 rounded-md text-white font-bold"
             >
               See All
@@ -68,7 +69,10 @@ const NewAndFlash = () => {
           </div>
           <div className="grid xl:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-2">
             {products
-              .filter((product) => product.flashSale === true)
+              .filter(
+                (product) =>
+                  product.status === true && product.newProduct === true
+              )
               .slice(0, items)
               .map((product) => (
                 <div key={product._id} className="product-card">
@@ -89,15 +93,19 @@ const NewAndFlash = () => {
                       {product.price - product.discount}
                       <span className="text-base font-serif">৳</span>
                     </p>
-                    <p className="-mt-1.5">
-                      <del className="text-sm text-gray-500">
-                        {product.price}
-                        <span className="font-serif">৳</span>
-                      </del>
-                      <span className="text-sm ml-1 text-gray-700 font-semibold">
-                        -{Math.round((product.discount / product.price) * 100)}%
-                      </span>
-                    </p>
+                    {product.discount > 0 && (
+                      <p className="-mt-1.5">
+                        <del className="text-sm text-gray-500">
+                          {product.price}
+                          <span className="font-serif">৳</span>
+                        </del>
+                        <span className="text-sm ml-1 text-gray-700 font-semibold">
+                          -
+                          {Math.round((product.discount / product.price) * 100)}
+                          %
+                        </span>
+                      </p>
+                    )}
                   </div>
                 </div>
               ))}
