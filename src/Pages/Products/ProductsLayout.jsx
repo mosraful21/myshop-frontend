@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./Products.css";
-import { IoGridOutline } from "react-icons/io5";
+import { IoGrid } from "react-icons/io5";
 import { FaList } from "react-icons/fa6";
 import { ImFilter } from "react-icons/im";
 import { Link, useLocation } from "react-router-dom";
@@ -114,7 +114,7 @@ const ProductsLayout = () => {
         <div className="flex items-center gap-3">
           <p className="flex items-center gap-2 text-gray-600">
             <span className="text-xl font-bold">View:</span>
-            <IoGridOutline
+            <IoGrid
               className={`h-5 w-5 mt-1 cursor-pointer ${
                 isGridView ? "text-blue-600" : ""
               }`}
@@ -132,7 +132,7 @@ const ProductsLayout = () => {
             onClick={OpenSidebar}
             className={`text-xl h-6 w-6 font-bold ${
               openSidebarToggle ? "text-orange-600" : "text-blue-700"
-            } xl:hidden`}
+            } filter`}
           />
         </div>
       </header>

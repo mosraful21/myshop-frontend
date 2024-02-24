@@ -29,7 +29,7 @@ const Product = () => {
           <div className="mb-2 border-b-2 border-gray-400">
             <h1 className="text-3xl font-bold text-gray-600">Just For You</h1>
           </div>
-          <div className="grid 2xl:grid-cols-6 xl:grid-cols-5 md:grid-cols-4 grid-cols-2 gap-2">
+          <div className="grid xl:grid-cols-6 lg:grid-cols-5 md:grid-cols-4 grid-cols-2 gap-2">
             {products
               .filter((product) => product.status === true)
               .map((product) => (

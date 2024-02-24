@@ -15,7 +15,7 @@ const Products = ({ isGridView, products }) => {
         <div
           className={
             isGridView
-              ? "grid 2xl:grid-cols-5 md:grid-cols-4 grid-cols-2 gap-2 px-1 mt-1 mb-1"
+              ? "grid lg:grid-cols-5 md:grid-cols-4 grid-cols-2 gap-2 px-1 mt-1 mb-1"
               : "grid grid-cols-1 gap-2 px-1 mt-1 mb-1"
           }
         >

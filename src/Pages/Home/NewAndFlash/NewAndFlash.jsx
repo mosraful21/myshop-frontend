@@ -25,7 +25,7 @@ const NewAndFlash = () => {
 
   const innerWidth = window.innerWidth;
   const items =
-    innerWidth >= 1280 ? 8 : innerWidth >= 1024 ? 6 : innerWidth >= 768 ? 6 : 6;
+    innerWidth >= 1280 ? 10 : innerWidth >= 1024 ? 8 : innerWidth >= 768 ? 8 : 8;
 
   return (
     <section className="grid lg:grid-cols-4 md:gap-3 md:mt-10 mt-5">
@@ -67,7 +67,7 @@ const NewAndFlash = () => {
               See All
             </Link>
           </div>
-          <div className="grid xl:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-2">
+          <div className="grid xl:grid-cols-5 md:grid-cols-4 grid-cols-2 gap-2">
             {products
               .filter(
                 (product) =>

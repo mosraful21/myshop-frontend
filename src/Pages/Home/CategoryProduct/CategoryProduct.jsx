@@ -50,9 +50,9 @@ const CategoryProduct = () => {
 
   const innerWidth = window.innerWidth;
   const items =
-    innerWidth >= 1536
+    innerWidth >= 1280
       ? 12
-      : innerWidth >= 1280
+      : innerWidth >= 1024
       ? 10
       : innerWidth >= 768
       ? 8
@@ -89,7 +89,7 @@ const CategoryProduct = () => {
           </div>
 
           {/* Product Data */}
-          <div className="grid 2xl:grid-cols-6 xl:grid-cols-5 md:grid-cols-4 grid-cols-2 gap-2">
+          <div className="grid xl:grid-cols-6 lg:grid-cols-5 md:grid-cols-4 grid-cols-2 gap-2">
             {products
               .filter(
                 (product) =>
