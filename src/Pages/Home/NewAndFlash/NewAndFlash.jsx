@@ -25,7 +25,13 @@ const NewAndFlash = () => {
 
   const innerWidth = window.innerWidth;
   const items =
-    innerWidth >= 1280 ? 10 : innerWidth >= 1024 ? 8 : innerWidth >= 768 ? 8 : 8;
+    innerWidth >= 1280
+      ? 10
+      : innerWidth >= 1024
+      ? 8
+      : innerWidth >= 768
+      ? 8
+      : 8;
 
   return (
     <section className="grid lg:grid-cols-4 md:gap-3 md:mt-10 mt-5">
@@ -77,7 +83,7 @@ const NewAndFlash = () => {
               .map((product) => (
                 <div key={product._id} className="product-card">
                   <div className="image">
-                    <img src={photo + product.photos[0]} alt="" />
+                    <img src={photo + product.photos[0]} alt="image" />
                     <div className="panel space-y-2">
                       <IoCartOutline className="h-[24px] w-[24px] text-white hover:text-orange-600" />
                       <IoHeartOutline className="h-[21px] w-[21px] text-white hover:text-orange-600" />
@@ -88,7 +94,12 @@ const NewAndFlash = () => {
                   </div>
 
                   <div className="px-1 mb-2">
-                    <p className="font-semibold line-clamp-2">{product.name}</p>
+                    <Link
+                      to={`/products/details/${product._id}`}
+                      className="font-semibold line-clamp-2"
+                    >
+                      {product.name}
+                    </Link>
                     <p className="text-lg text-orange-600 font-semibold">
                       {product.price - product.discount}
                       <span className="text-base font-serif">৳</span>

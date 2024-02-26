@@ -27,7 +27,7 @@ const Products = ({ isGridView, products }) => {
                 className={isGridView ? "grid-card" : "list-card"}
               >
                 <div className="photo">
-                  <img src={photo + product.photos[0]} alt="" />
+                  <img src={photo + product.photos[0]} alt="image" />
                   <div className="panel space-y-2">
                     <IoCartOutline className="h-[24px] w-[24px] text-white hover:text-orange-600" />
                     <IoHeartOutline className="h-[21px] w-[21px] text-white hover:text-orange-600" />

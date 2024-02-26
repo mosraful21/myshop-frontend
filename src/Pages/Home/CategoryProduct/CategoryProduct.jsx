@@ -10,6 +10,7 @@ import {
   photoUrl,
 } from "../../../Components/Fetcher/Fetcher";
 import { useQuery } from "react-query";
+import { Link } from "react-router-dom";
 
 const CategoryProduct = () => {
   const photo = photoUrl;
@@ -99,7 +100,7 @@ const CategoryProduct = () => {
               .map((product) => (
                 <div key={product._id} className="product-card">
                   <div className="image">
-                    <img src={photo + product.photos[0]} alt="" />
+                    <img src={photo + product.photos[0]} alt="image" />
                     <div className="panel space-y-2">
                       <IoCartOutline className="h-[24px] w-[24px] text-white hover:text-orange-600" />
                       <IoHeartOutline className="h-[21px] w-[21px] text-white hover:text-orange-600" />
@@ -110,7 +111,12 @@ const CategoryProduct = () => {
                   </div>
 
                   <div className="px-1 mb-2">
-                    <p className="font-semibold line-clamp-2">{product.name}</p>
+                    <Link
+                      to={`/products/details/${product._id}`}
+                      className="font-semibold line-clamp-2"
+                    >
+                      {product.name}
+                    </Link>
                     <p className="text-lg text-orange-600 font-semibold">
                       {product.price - product.discount}
                       <span className="text-base font-serif">৳</span>
