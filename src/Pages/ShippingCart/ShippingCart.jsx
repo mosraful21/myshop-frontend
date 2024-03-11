@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TiTick } from "react-icons/ti";
 import "./ShippingCart.css";
 import { FaUserAlt } from "react-icons/fa";
@@ -10,8 +10,6 @@ const ShippingCart = () => {
   const steps = ["Shipping Info", "Customer Info", "Payment"];
   const [currentStep, setCurrentStep] = useState(0);
   const [complete, setComplete] = useState(false);
-  const navigate = useNavigate();
-
   const [customerInfo, setCustomerInfo] = useState({
     name: "",
     email: "",
@@ -21,6 +19,14 @@ const ShippingCart = () => {
     district: "",
     address: "",
   });
+
+  const navigate = useNavigate();
+  const [cartItems, setCartItems] = useState([]);
+
+  useEffect(() => {
+    const storedCartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+    setCartItems(storedCartItems);
+  }, []);
 
   const handleNext = () => {
     if (currentStep === steps.length - 1) {
@@ -80,7 +86,7 @@ const ShippingCart = () => {
 
       <div>
         {/******************** Shipping Info ********************/}
-        {currentStep === 0 && <ShippingDetails />}
+        {currentStep === 0 && <ShippingDetails cartItems={cartItems} />}
 
         {/******************** Customer Info ********************/}
         {currentStep === 1 && (

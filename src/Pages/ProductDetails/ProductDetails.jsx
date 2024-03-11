@@ -19,6 +19,8 @@ const ProductDetails = () => {
   const [categoryProducts, setCategoryProducts] = useState([]);
   const { data, isLoading, error } = useQuery("products", getProductAPI);
 
+  const sellingPrice = product.price - product.discount;
+
   useEffect(() => {
     if (data && product) {
       const filteredProducts = data.filter(
@@ -41,6 +43,26 @@ const ProductDetails = () => {
     if (quantity > 1) {
       setQuantity(quantity - 1);
     }
+  };
+
+  const handleAddToCart = () => {
+    const color = product.productDetails[activeColorIndex]?.color || "No Color";
+
+    const cartItem = {
+      id: product._id,
+      name: product.name,
+      price: sellingPrice,
+      color: color,
+      quantity: quantity,
+      brand: product.brand.name,
+      photo: product.photos[current],
+    };
+
+    const existingCartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+    const updatedCartItems = [...existingCartItems, cartItem];
+
+    localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
+    alert("Product added to cart!");
   };
 
   if (isLoading) {
@@ -195,7 +217,7 @@ const ProductDetails = () => {
 
           {/* Button */}
           <div className="flex flex-wrap justify-center gap-4 py-8">
-            <button className="add-to-cart">
+            <button className="add-to-cart" onClick={handleAddToCart}>
               <i className="animation"></i>Add To Cart
               <i className="animation"></i>
             </button>

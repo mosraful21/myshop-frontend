@@ -1,6 +1,9 @@
 import { FaShoppingCart } from "react-icons/fa";
+import { photoUrl } from "../../Components/Fetcher/Fetcher";
 
-const ShippingDetails = () => {
+const ShippingDetails = ({ cartItems }) => {
+  const photo = photoUrl;
+
   return (
     <section className="border-2 border-gray-400 rounded-md p-4">
       <h2 className="text-2xl font-bold flex items-center gap-2 text-blue-500 mb-5">
@@ -20,14 +23,18 @@ const ShippingDetails = () => {
                 </tr>
               </thead>
               <tbody>
-                <tr className="text-center">
-                  <td className="p-2 border">
-                    <img src="/" alt="" className="w-12 h-12" />
-                  </td>
-                  <td className="p-2 border">2</td>
-                  <td className="p-2 border">1000</td>
-                  <td className="p-2 border">2000</td>
-                </tr>
+                {cartItems.map((item, index) => (
+                  <tr key={index} className="text-center">
+                    <td className="p-2 border">
+                      <img src={photo + item.photo} alt="" className="w-12 h-12" />
+                      <span>{item.name}</span> <br />
+                      <span>{item.color}</span>
+                    </td>
+                    <td className="p-2 border">{item.quantity}</td>
+                    <td className="p-2 border">{item.price}</td>
+                    <td className="p-2 border">{item.price * item.quantity}</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
