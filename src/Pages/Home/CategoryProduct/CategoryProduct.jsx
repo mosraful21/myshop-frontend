@@ -71,8 +71,10 @@ const CategoryProduct = () => {
                 <button
                   key={index}
                   className={`${
-                    activeTab === category._id ? "bg-blue-600" : "bg-gray-400"
-                  } text-white text-sm font-semibold px-2 py-1 ${
+                    activeTab === category._id
+                      ? "bg-[#40b3a2] text-white"
+                      : "bg-gray-300"
+                  } text-gray-600 text-sm font-semibold px-2 py-1 ${
                     displayCategory.length === 1
                       ? "rounded"
                       : index === 0

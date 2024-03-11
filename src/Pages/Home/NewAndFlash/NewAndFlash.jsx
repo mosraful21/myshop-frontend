@@ -42,10 +42,7 @@ const NewAndFlash = () => {
           <p>Season Sale!</p>
           <p className="text-2xl font-bold">Flash Sales</p>
           <p>Time</p>
-          <Link
-            to="/products?flashsales=products"
-            className="bg-orange-500 px-4 py-1 font-semibold text-white"
-          >
+          <Link to="/products?flashsales=products" className="btn px-5 py-1">
             Shop Now
           </Link>
         </div>
@@ -68,9 +65,9 @@ const NewAndFlash = () => {
             <p className="text-3xl font-bold text-gray-600">New Arrivals</p>
             <Link
               to="/products?newarrivals=products"
-              className="bg-blue-600 px-3 py-0.5 rounded-md text-white font-bold"
+              className="btn px-3 py-0.5"
             >
-              See All
+              Show More
             </Link>
           </div>
           <div className="grid xl:grid-cols-5 md:grid-cols-4 grid-cols-2 gap-2">

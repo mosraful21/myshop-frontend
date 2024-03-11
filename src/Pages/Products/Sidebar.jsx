@@ -23,7 +23,7 @@ const Sidebar = ({ openSidebarToggle, brand, category }) => {
             </div>
             {category.map((category) => (
               <div key={category._id}>
-                <p className="px-4 py-1.5 hover:bg-[#c6c6c62a] text-lg capitalize flex items-center justify-between">
+                <p className="px-4 py-1.5 hover:bg-[#c6c6c62a] text-lg capitalize">
                   <Link to={`/products?category=${category._id}`}>
                     {category.name}
                   </Link>

@@ -1,6 +1,85 @@
-.details img {
-  width: 100%;
-  aspect-ratio: 1/1;
-  object-fit: contain;
-  background: #fff;
+/******************** Add to Cart Button Start  ********************/
+.add-to-cart {
+  background: #40b3a2;
+  min-width: 200px;
+  min-height: 2.5em;
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  overflow: hidden;
+  cursor: pointer;
 }
+
+.add-to-cart .animation {
+  border-radius: 100%;
+  animation: ripple 0.6s linear infinite;
+}
+
+@keyframes ripple {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.1),
+      0 0 0 20px rgba(255, 255, 255, 0.1), 0 0 0 40px rgba(255, 255, 255, 0.1),
+      0 0 0 60px rgba(255, 255, 255, 0.1);
+  }
+
+  100% {
+    box-shadow: 0 0 0 20px rgba(255, 255, 255, 0.1),
+      0 0 0 40px rgba(255, 255, 255, 0.1), 0 0 0 60px rgba(255, 255, 255, 0.1),
+      0 0 0 80px rgba(255, 255, 255, 0);
+  }
+}
+/********************* Add to Cart Button End  *********************/
+
+/********************** Buy Now Button Start  **********************/
+.buy-now {
+  background: #4b706b;
+  min-width: 200px;
+  min-height: 2.5em;
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+}
+
+.buy-now::before {
+  content: "";
+  width: 0;
+  height: 3em;
+  border-radius: 4px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-image: linear-gradient(to right, #0fd850 0%, #b5f947 100%);
+  transition: 0.5s ease;
+  display: block;
+  z-index: -1;
+}
+
+.buy-now:hover::before {
+  width: 200px;
+}
+
+@media screen and (max-width: 768px) {
+  .add-to-cart {
+    width: 100%;
+  }
+
+  .buy-now {
+    width: 100%;
+  }
+
+  .buy-now:hover::before {
+    width: 100%;
+  }
+}
+/*********************** Buy Now Button End  ***********************/

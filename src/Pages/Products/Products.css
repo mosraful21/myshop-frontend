@@ -166,3 +166,13 @@
 }
 /************* List Card section End ****************/
 /*************** Product Card Design End **************/
+
+.top-banner {
+  color: #fff;
+  font-size: clamp(20px, 4vw, 50px);
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 6/1;
+}

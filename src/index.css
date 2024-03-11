@@ -81,3 +81,31 @@ body {
 /*********** Product Card Design End ***********/
 
 /* ******************************** */
+
+.btn {
+  background: #40b3a2;
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  color: #fff;
+  overflow: hidden;
+  font-weight: 600;
+  position: relative;
+  z-index: 1;
+}
+
+.btn::before {
+  content: "";
+  width: 0;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-image: linear-gradient(to right, #25b653 0%, #b5f947 100%);
+  transition: 0.5s ease;
+  display: block;
+  z-index: -1;
+}
+
+.btn:hover::before {
+  width: 100%;
+}

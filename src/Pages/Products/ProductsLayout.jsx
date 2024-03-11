@@ -24,8 +24,10 @@ const ProductsLayout = () => {
   const location = useLocation();
   const isBrand = new URLSearchParams(location.search).get("brand");
   const isCategory = new URLSearchParams(location.search).get("category");
-  const isFlashSale = new URLSearchParams(location.search).get("flashsales") === "products";
-  const isNewArrival = new URLSearchParams(location.search).get("newarrivals") === "products";
+  const isFlashSale =
+    new URLSearchParams(location.search).get("flashsales") === "products";
+  const isNewArrival =
+    new URLSearchParams(location.search).get("newarrivals") === "products";
 
   const {
     data: category,
@@ -101,12 +103,26 @@ const ProductsLayout = () => {
                 {item.label}
               </Link>
               {index < breadcrumbItems.length - 1 && (
-                <span className="mx-1">/</span>
+                <span className="mx-1">{">"}</span>
               )}
             </li>
           ))}
         </ol>
       </nav>
+
+      {/* Flash Sales */}
+      {isFlashSale && (
+        <div className="top-banner bg-gradient-to-r from-[#2D9596] to-[#9BCF53]">
+          Flash Sales
+        </div>
+      )}
+
+      {/* New Arrivals */}
+      {isNewArrival && (
+        <div className="top-banner bg-gradient-to-r from-blue-400 to-emerald-400">
+          New Arrivals
+        </div>
+      )}
 
       <header className="flex items-center justify-between mb-2 py-2 box-shadow">
         <h1 className="text-2xl font-bold">Products</h1>
@@ -116,13 +132,13 @@ const ProductsLayout = () => {
             <span className="text-xl font-bold">View:</span>
             <IoGrid
               className={`h-5 w-5 mt-1 cursor-pointer ${
-                isGridView ? "text-blue-600" : ""
+                isGridView ? "text-[#40b3a2]" : "text-[#8f9a9896]"
               }`}
               onClick={() => setIsGridView(true)}
             />
             <FaList
               className={`h-5 w-5 mt-1 cursor-pointer ${
-                !isGridView ? "text-blue-600" : ""
+                !isGridView ? "text-[#40b3a2]" : "text-[#8f9a9896]"
               }`}
               onClick={() => setIsGridView(false)}
             />
