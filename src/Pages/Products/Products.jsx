@@ -5,9 +5,14 @@ import {
 } from "react-icons/io5";
 import { photoUrl } from "../../Components/Fetcher/Fetcher";
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { CartContext } from "../../Components/CartContextApi/CartContextApi";
+
 
 const Products = ({ isGridView, products }) => {
   const photo = photoUrl;
+
+  const { handleAddToCart } = useContext(CartContext);
 
   return (
     <section>
@@ -34,7 +39,9 @@ const Products = ({ isGridView, products }) => {
                     <IoShareSocialOutline className="h-[20px] w-[20px] text-white hover:text-orange-600" />
                   </div>
 
-                  <button>Add to Cart</button>
+                  <button onClick={() => handleAddToCart(product)}>
+                    Add to Cart
+                  </button>
                 </div>
 
                 <div className="px-1 mb-2 details">

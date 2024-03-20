@@ -1,6 +1,6 @@
 import { Link, useLoaderData } from "react-router-dom";
 import { getProductAPI, photoUrl } from "../../Components/Fetcher/Fetcher";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import "./ProductDetails.css";
 import { IoIosAdd, IoIosRemove } from "react-icons/io";
 import { useQuery } from "react-query";
@@ -9,9 +9,13 @@ import {
   IoHeartOutline,
   IoShareSocialOutline,
 } from "react-icons/io5";
+import { CartContext } from "../../Components/CartContextApi/CartContextApi";
+
 
 const ProductDetails = () => {
   const photo = photoUrl;
+  const { handleAddToCart } = useContext(CartContext);
+
   const product = useLoaderData();
   const [current, setCurrent] = useState(0);
   const [activeColorIndex, setActiveColorIndex] = useState(0);
@@ -45,24 +49,27 @@ const ProductDetails = () => {
     }
   };
 
-  const handleAddToCart = () => {
-    const color = product.productDetails[activeColorIndex]?.color || "No Color";
+  const AddToCart = () => {
+    const color = product.productDetails[activeColorIndex]?.color || "";
 
     const cartItem = {
       id: product._id,
       name: product.name,
-      price: sellingPrice,
+      photo: product.photos[current],
       color: color,
       quantity: quantity,
       brand: product.brand.name,
-      photo: product.photos[current],
+      rate: sellingPrice,
+      price: sellingPrice * quantity,
     };
 
-    const existingCartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+    const existingCartItems =
+      JSON.parse(localStorage.getItem("cartItems")) || [];
     const updatedCartItems = [...existingCartItems, cartItem];
 
     localStorage.setItem("cartItems", JSON.stringify(updatedCartItems));
     alert("Product added to cart!");
+    window.location.reload();
   };
 
   if (isLoading) {
@@ -217,7 +224,7 @@ const ProductDetails = () => {
 
           {/* Button */}
           <div className="flex flex-wrap justify-center gap-4 py-8">
-            <button className="add-to-cart" onClick={handleAddToCart}>
+            <button className="add-to-cart" onClick={AddToCart}>
               <i className="animation"></i>Add To Cart
               <i className="animation"></i>
             </button>
@@ -243,7 +250,9 @@ const ProductDetails = () => {
                   <IoShareSocialOutline className="h-[20px] w-[20px] text-white hover:text-orange-600" />
                 </div>
 
-                <button>Add to Cart</button>
+                <button onClick={() => handleAddToCart(product)}>
+                  Add to Cart
+                </button>
               </div>
               <div className="px-1 mb-2">
                 <Link

@@ -1,11 +1,11 @@
-import { Link } from "react-router-dom";
-import logo from "../../assets/Logo/logo.png";
 import { useContext } from "react";
-import { CartContext } from "../../Pages/ProductDetails/CartContext";
+import { Link } from "react-router-dom";
+import logo from "../../assets/Logo/logo.png"; // Adjust the path as needed
+import { CartContext } from "../CartContextApi/CartContextApi";
 
 const Header = () => {
   const { cartItems } = useContext(CartContext);
-  
+
   return (
     <section className="bg-[#E26EE5] w-full">
       {/* <marquee direction="" className="text-white bg-purple-500">Welcome To Our Shop. Happy Shopping.</marquee> */}

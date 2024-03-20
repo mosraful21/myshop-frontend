@@ -1,3 +1,4 @@
+import { useContext } from "react";
 import { useQuery } from "react-query";
 import { getProductAPI, photoUrl } from "../../../Components/Fetcher/Fetcher";
 import {
@@ -6,9 +7,12 @@ import {
   IoShareSocialOutline,
 } from "react-icons/io5";
 import { Link } from "react-router-dom";
+import { CartContext } from "../../../Components/CartContextApi/CartContextApi";
 
 const NewAndFlash = () => {
   const photo = photoUrl;
+
+  const { handleAddToCart } = useContext(CartContext);
 
   const {
     data: products,
@@ -87,7 +91,9 @@ const NewAndFlash = () => {
                       <IoShareSocialOutline className="h-[20px] w-[20px] text-white hover:text-orange-600" />
                     </div>
 
-                    <button>Add to Cart</button>
+                    <button onClick={() => handleAddToCart(product)}>
+                      Add to Cart
+                    </button>
                   </div>
 
                   <div className="px-1 mb-2">

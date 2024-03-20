@@ -6,9 +6,14 @@ import {
   IoShareSocialOutline,
 } from "react-icons/io5";
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { CartContext } from "../../../Components/CartContextApi/CartContextApi";
+
 
 const Product = () => {
   const photo = photoUrl;
+
+  const { handleAddToCart } = useContext(CartContext);
 
   const {
     data: products,
@@ -43,7 +48,9 @@ const Product = () => {
                       <IoShareSocialOutline className="h-[20px] w-[20px] text-white hover:text-orange-600" />
                     </div>
 
-                    <button>Add to Cart</button>
+                    <button onClick={() => handleAddToCart(product)}>
+                      Add to Cart
+                    </button>
                   </div>
                   <div className="px-1 mb-2">
                     <Link

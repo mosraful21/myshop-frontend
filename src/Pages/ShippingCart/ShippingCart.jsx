@@ -1,15 +1,20 @@
-import { useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { TiTick } from "react-icons/ti";
 import "./ShippingCart.css";
 import { FaUserAlt } from "react-icons/fa";
 import { MdPayment } from "react-icons/md";
 import ShippingDetails from "./ShippingDetails";
 import { useNavigate } from "react-router-dom";
+import { CartContext } from "../../Components/CartContextApi/CartContextApi";
 
 const ShippingCart = () => {
   const steps = ["Shipping Info", "Customer Info", "Payment"];
   const [currentStep, setCurrentStep] = useState(0);
   const [complete, setComplete] = useState(false);
+  const navigate = useNavigate();
+
+  const { cartItems, setCartItems } = useContext(CartContext);
+
   const [customerInfo, setCustomerInfo] = useState({
     name: "",
     email: "",
@@ -20,19 +25,50 @@ const ShippingCart = () => {
     address: "",
   });
 
-  const navigate = useNavigate();
-  const [cartItems, setCartItems] = useState([]);
+  const [paymentInfo, setPaymentInfo] = useState({
+    paymentMethod: "Cash On Delivery",
+  });
 
-  useEffect(() => {
-    const storedCartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
-    setCartItems(storedCartItems);
-  }, []);
-
-  const handleNext = () => {
+  const handleNext = async () => {
     if (currentStep === steps.length - 1) {
-      setComplete(true);
-      alert("Thanks for shopping");
-      navigate("/");
+      try {
+        const formattedCartItems = cartItems.map((item) => ({
+          photo: item.photo,
+          name: item.name,
+          color: item.color,
+          brand: item.brand,
+          quantity: item.quantity,
+          rate: item.rate,
+          price: item.price,
+        }));
+
+        const orderData = {
+          productInfo: formattedCartItems,
+          userInfo: customerInfo,
+          paymentInfo: paymentInfo,
+        };
+
+        const res = await fetch("http://localhost:3000/api/order", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(orderData),
+        });
+
+        if (res.ok) {
+          await res.json();
+          setComplete(true);
+          alert("Thanks for Shopping");
+          navigate("/");
+        } else {
+          const errorData = await res.json();
+          throw new Error(errorData.error);
+        }
+      } catch (error) {
+        console.error("Error creating order:", error.message);
+        alert("Failed to create order. Please try again.");
+      }
     } else if (currentStep === 1) {
       const { country, division, district, address } = customerInfo;
       if (!country || !division || !district || !address) {
@@ -57,6 +93,11 @@ const ShippingCart = () => {
       case "customer":
         setCustomerInfo((prevInfo) => ({ ...prevInfo, [name]: value }));
         break;
+
+      case "payment":
+        setPaymentInfo((prevInfo) => ({ ...prevInfo, [name]: value }));
+        break;
+
       default:
         break;
     }
@@ -86,12 +127,14 @@ const ShippingCart = () => {
 
       <div>
         {/******************** Shipping Info ********************/}
-        {currentStep === 0 && <ShippingDetails cartItems={cartItems} />}
+        {currentStep === 0 && (
+          <ShippingDetails cartItems={cartItems} setCartItems={setCartItems} />
+        )}
 
         {/******************** Customer Info ********************/}
         {currentStep === 1 && (
-          <div className="border-2 border-gray-400 rounded-md p-4">
-            <h2 className="text-2xl font-bold flex items-center gap-2 text-blue-500">
+          <div className="border-2 border-gray-400 rounded-md md:p-4 p-2">
+            <h2 className="text-2xl font-bold flex items-center gap-2 text-[#3ea590]">
               <FaUserAlt />
               Customer Information
             </h2>
@@ -208,8 +251,8 @@ const ShippingCart = () => {
 
         {/******************** Payment ********************/}
         {currentStep === 2 && (
-          <div className="border-2 border-gray-400 rounded-md p-4">
-            <h2 className="text-2xl font-bold flex items-center gap-2 text-blue-500 mb-5">
+          <div className="border-2 border-gray-400 rounded-md md:p-4 p-2">
+            <h2 className="text-2xl font-bold flex items-center gap-2 text-[#3ea590] mb-5">
               <MdPayment />
               Payment Gateway
             </h2>
@@ -219,8 +262,9 @@ const ShippingCart = () => {
                 <input
                   type="radio"
                   name="paymentMethod"
-                  value="Cash On Delivery"
                   className="form-radio h-5 w-5 text-red-500 focus:ring-red-400"
+                  value={paymentInfo.paymentMethod}
+                  onChange={(e) => handleInputChange(e, "payment")}
                 />
                 <span className="ml-2">Cash On Delivery</span>
               </label>
